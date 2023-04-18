@@ -18,4 +18,13 @@ public class Town : IDbModel
     {
         return String.Format("Town: {0} Town Id: {1}", Name, Id);
     }
+
+    public Town(string csvLine)
+    {
+        string[] data = csvLine.Split(',');
+        if (data.Length != 2 || !int.TryParse(data[0], out int id))
+            throw new ArgumentException("Incorrect persons csv");
+        Id = id;
+        Name = data[1];
+    }
 }

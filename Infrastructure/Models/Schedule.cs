@@ -26,4 +26,18 @@ public class Schedule : IDbModel
                              " on {5} at {6}", Id, TownFromId, DateTimeOfDeparture.Date,
             DateTimeOfDeparture.TimeOfDay, TownToId, DateTimeOfArrival.Date, DateTimeOfArrival.TimeOfDay);
     }
+
+    public Schedule(string csvLine)
+    {
+        string[] data = csvLine.Split(',');
+        if (data.Length != 5 || !int.TryParse(data[0], out int id)  || !int.TryParse(data[1], out int from)
+            || !int.TryParse(data[2], out int to)  || !DateTime.TryParse(data[3], out DateTime departure) 
+            || !DateTime.TryParse(data[4], out DateTime arrival))
+            throw new ArgumentException("Incorrect schedules csv");
+        Id = id;
+        TownFromId = from;
+        TownToId = to;
+        DateTimeOfDeparture = departure;
+        DateTimeOfArrival = arrival;
+    }
 }
