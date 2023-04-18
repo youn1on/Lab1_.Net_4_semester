@@ -5,11 +5,11 @@ namespace ConsoleApplication;
 
 public class DbContextFiller
 {
-    private const string PersonsSource = "_.csv"; // #TODO
-    private const string TrainsSource = "_.csv"; // #TODO
-    private const string SchedulesSource = "_.csv"; // #TODO
-    private const string TownsSource = "_.csv"; // #TODO
-    private const string WagonsSource = "_.csv"; // #TODO
+    private const string PersonsSource = "data/Persons.csv";
+    private const string TrainsSource = "data/Trains.csv";
+    private const string SchedulesSource = "data/Schedules.csv";
+    private const string TownsSource = "data/Towns.csv";
+    private const string WagonsSource = "data/Wagons.csv";
 
     private static List<T> GetModels<T>(string sourcePath, Func<string, T> parserFunc) where T : IDbModel
     {
