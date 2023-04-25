@@ -26,8 +26,8 @@ public static class Program
         Console.WriteLine();
 
         //3
-        var schedulesFromTown = queries.GetSchedulesFromTown("Zhytomyr");
-        Console.WriteLine("Розклади з мiста Житомира:");
+        var schedulesFromTown = queries.GetSchedulesFromTown("Lviv");
+        Console.WriteLine("Розклади з мiста Львова:");
         foreach (var schedule in schedulesFromTown)
         {
             Console.WriteLine(
@@ -61,8 +61,8 @@ public static class Program
         //6
 
         var closestSchedulesBetweenTowns =
-            queries.GetClosestSchedulesBetweenTwoTowns("Berdychiv", "Fastiv");
-        Console.WriteLine("Найближчi розклади мiж Бердичевом та Фастовом:");
+            queries.GetClosestSchedulesBetweenTwoTowns("Darnytsa", "Myrgorod");
+        Console.WriteLine("Найближчi розклади мiж Дарницею та Миргородом:");
         foreach (var tuple in closestSchedulesBetweenTowns)
         {
             Console.WriteLine($"\tПотяг {tuple.Item1} вiдправиться з мiста {queries.GetTownById(tuple.Item2.TownFromId)}" +
