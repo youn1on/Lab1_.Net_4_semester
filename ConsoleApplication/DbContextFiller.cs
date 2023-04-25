@@ -3,7 +3,7 @@ using Infrastructure.Models;
 
 namespace ConsoleApplication;
 
-public class DbContextFiller
+public static class DbContextFiller
 {
     private const string PersonsSource = "data/Persons.csv";
     private const string TrainsSource = "data/Trains.csv";
