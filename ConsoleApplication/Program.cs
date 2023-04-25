@@ -217,6 +217,11 @@ public static class Program
         
         //20
 
+        var averageTimeBetweenCitiesForTrain = queries.GetAverageTimeBetweenCitiesForTrain(queries.GetTrainById(1));
+        Console.WriteLine($"Середнiй час поїздки мiж мiстами для потягу {queries.GetTrainById(1)} у хвилинах:\n\t{averageTimeBetweenCitiesForTrain}\n");
+            
+        //21
+
         var personResponsibleForMaxWagons = queries.GetPersonResponsibleForMaxWagonsTrain();
         Console.WriteLine($"Людина, вiдповiдальна за найбiльшу кiлькiсть вагонiв:\n\t{personResponsibleForMaxWagons}\n");
     }

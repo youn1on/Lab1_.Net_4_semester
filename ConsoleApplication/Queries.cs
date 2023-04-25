@@ -42,7 +42,7 @@ public class Queries
         return _database.Schedules.MinBy(s => s.DateTimeOfArrival - s.DateTimeOfDeparture);
     }
 
-    // 5. Знайдемо найдовший час зупинки, місто, в якому ця зупинка відбувається та відовідний потяг.
+    // 5. Знайдемо найдовший час зупинки, місто, в якому ця зупинка відбувається та відповідний потяг.
     public IEnumerable<(Train, Town, double)> GetMaxStopTimeTown() 
     {
         return _database.Schedules.GroupBy(s => s.TrainId)
@@ -198,14 +198,14 @@ public class Queries
             .Select(t => (GetPersonById(t.ResponsiblePersonId)!, t));
     }
     
-    // 18. Отримаємо всі міста, через які їде певний потяг.
+    // 19. Отримаємо всі міста, через які їде певний потяг.
     
     public IEnumerable<Town> GetTownsByTrain(Train train)
     {
         return _database.Schedules.Where(s => s.TrainId == train.Id).Select(s => GetTownById(s.TownToId)!).Distinct();
     }
 
-    // 19. Середній час подорожі між містами для одного потягу.
+    // 20. Середній час подорожі між містами для одного потягу.
 
     public double GetAverageTimeBetweenCitiesForTrain(Train train)
     {
@@ -213,7 +213,7 @@ public class Queries
             .Average(s => (s.DateTimeOfArrival - s.DateTimeOfDeparture).TotalMinutes);
     }
     
-    // 20. Знайдемо людину, відповідальну за потяг з найбільшою кількістю вагонів.
+    // 21. Знайдемо людину, відповідальну за потяг з найбільшою кількістю вагонів.
 
     public Person GetPersonResponsibleForMaxWagonsTrain()
     {
