@@ -1,5 +1,4 @@
-﻿using Infrastructure.Interfaces;
-using Infrastructure.Models;
+﻿using Infrastructure.Models;
 
 namespace Infrastructure.DbContext;
 
