@@ -3,7 +3,7 @@ using Infrastructure.Models;
 
 namespace Infrastructure.DbContext;
 
-public class DbContext : IDbContext
+public class DbContext
 {
     public List<Person> ResponsiblePeople;
     public List<Schedule> Schedules;

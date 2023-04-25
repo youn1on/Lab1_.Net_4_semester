@@ -14,10 +14,10 @@ public class Queries
     
     // 1. Знайдемо максимальний час подорожі між містами. 
 
-    public double GetMaximumTravelTime(int trainId)
+    public TimeSpan GetMaximumTravelTime(int trainId)
     {
         return _database.Schedules.Where(schedule => schedule.TrainId == trainId).Select(schedule => schedule.DateTimeOfArrival - schedule.DateTimeOfDeparture)
-            .Max().TotalMinutes!;
+            .Max()!;
     }
 
     // 2. Знайдемо кількість місць у потягах.
@@ -43,7 +43,7 @@ public class Queries
     }
 
     // 5. Знайдемо найдовший час зупинки, місто, в якому ця зупинка відбувається та відовідний потяг.
-    public IEnumerable<(Train, Town, double)> GetMaxStopTimeTown() //#TODO
+    public IEnumerable<(Train, Town, double)> GetMaxStopTimeTown() 
     {
         return _database.Schedules.GroupBy(s => s.TrainId)
             .Select(g => (GetTrainById(g.Key),
@@ -54,7 +54,28 @@ public class Queries
                 (i.Item1!, GetTownById(i.Item2.Item1.TownToId)!, i.Item2.TotalMinutes!.Value));
     }
     
-    // 6. #TODO
+    // 6. Отримаємо найближчі розклади між двома містами.
+    
+    public IEnumerable<(Train, Schedule, Schedule)> GetClosestSchedulesBetweenTwoTowns(String A, String B)
+    {
+        return _database.Schedules.Where(s =>
+                _database.Schedules.Where(sch => GetTownById(sch.TownFromId)?.Name == A).Select(sch => sch.TrainId)
+                    .Intersect(_database.Schedules.Where(sch => GetTownById(sch.TownToId)?.Name == B)
+                        .Select(sch => sch.TrainId)).Contains(s.TrainId) &&
+                s.DateTimeOfDeparture > DateTime.Now &&
+                (GetTownById(s.TownFromId)!.Name == A || GetTownById(s.TownToId)!.Name == B))
+            .GroupBy(sch => sch.TrainId).Select(g => g.Where(s => GetTownById(s.TownFromId)!.Name == A).Select(s =>
+                    (GetTrainById(g.Key)!, s,
+                        g.Where(s2 =>
+                                GetTownById(s2.TownToId)!.Name == B && s2.DateTimeOfArrival > s.DateTimeOfDeparture)
+                            .MinBy(s2 => s2.DateTimeOfArrival.Subtract(s.DateTimeOfDeparture))))
+                .Where(p => p.Item3 is not null).Select(p => (p.Item1, p.s, p.Item3!))).Where(ien => ien.Any())
+            .Select(ien => (ien, ien.Select(p => p.Item3.DateTimeOfArrival.Subtract(p.s.DateTimeOfDeparture)).Min()))
+            .Select(ienTimePair =>
+                ienTimePair.Item1
+                    .Where(p => p.Item3.DateTimeOfArrival.Subtract(p.s.DateTimeOfDeparture) <= ienTimePair.Item2)
+                    .MinBy(p => p.s.DateTimeOfDeparture));
+    }
 
     // 7. Знайдемо потяги з хоча б одним люксовим вагоном.
 
@@ -163,17 +184,17 @@ public class Queries
 
     // 17. Список міст де наразі потяги не курсують.
 
-    public IEnumerable<Town> GetInactiveTowns()
+    public IEnumerable<Town?> GetInactiveTowns()
     {
         return _database.Schedules.GroupBy(s => s.TownFromId).Where(g => !g.Any())
-            .Select(g => GetTownById(g.Key)!);
+            .Select(g => GetTownById(g.Key));
     }
 
-    // 18. Знайдемо відповідальних осіб, в яких ім'я починається на "К" та виведемо потяги, за які вони відповідають.
+    // 18. Знайдемо відповідальних осіб, в яких ім'я починається на "M" та виведемо потяги, за які вони відповідають.
 
-    public IEnumerable<(Person, Train)> GetResponsiblePersonStartsWithK()
+    public IEnumerable<(Person, Train)> GetResponsiblePersonStartsWithM()
     {
-        return _database.Trains.Where(t => GetPersonById(t.ResponsiblePersonId)!.Name.StartsWith("К"))
+        return _database.Trains.Where(t => GetPersonById(t.ResponsiblePersonId)!.Name.StartsWith("М"))
             .Select(t => (GetPersonById(t.ResponsiblePersonId)!, t));
     }
     
