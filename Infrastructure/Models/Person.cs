@@ -30,6 +30,6 @@ public class Person : IDbModel
     
     public override string ToString()
     {
-        return String.Format("Responsible person: {0} {1} {2} responsible person Id: {3}", Surname, Name, Patronymic, Id);
+        return String.Join(" ", Surname, Name, Patronymic);
     }
 }

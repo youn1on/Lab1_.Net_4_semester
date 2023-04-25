@@ -19,8 +19,7 @@ public class Train : IDbModel
 
     public override string ToString()
     {
-        return String.Format("Train:  {0} \"{1}\" responsible person Id: {2} amount of wagons: {3}",
-            TrainNumber, InventaryNumber, ResponsiblePersonId, AmountOfWagons);
+        return TrainNumber;
     }
 
     public int Id => InventaryNumber;

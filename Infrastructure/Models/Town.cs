@@ -16,7 +16,7 @@ public class Town : IDbModel
     
     public override string ToString()
     {
-        return String.Format("Town: {0} Town Id: {1}", Name, Id);
+        return Name;
     }
 
     public Town(string csvLine)
